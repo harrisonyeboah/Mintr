@@ -81,7 +81,7 @@ const Register = () => {
         } else if (!/^\+?[1-9]\d{0,15}$/.test(formData.phoneNumber.replace(/[\s\-()]/g, ''))) {
             newErrors.phoneNumber = 'Please enter a valid phone number';
         }
-        
+
         if (!formData.password) {
             newErrors.password = 'Password is required';
         } else if (formData.password.length < 6) {
@@ -98,7 +98,7 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         if (validateForm()) {
             try {
                 const response = await fetch('/api/register', {
@@ -106,10 +106,10 @@ const Register = () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
-    
+
                 const result = await response.json();
                 console.log('Server response:', result);
-    
+
                 if (response.ok) {
                     alert("You are registered")
                     // Clear the form
@@ -126,7 +126,7 @@ const Register = () => {
                 } else {
                     alert("Registration failed: " + (result.message || "Unknown error"));
                 }
-    
+
             } catch (err) {
                 console.error('Error posting to API:', err);
             }

@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import { connectDB } from "./db.js";
 import registerRoutes from "./routes/registerRoutes.js";
+import loginRoutes from "./routes/loginRoutes.js";
 
 dotenv.config();
 const app = express();
@@ -20,6 +21,7 @@ app.get("/test", (req, res) => res.send("Server is running!"));
 
 // ROUTES
 app.use("/api/register", registerRoutes);
+app.use("/api/login", loginRoutes)
 
 // CONNECT DB AND START SERVER
 connectDB().then(() => {

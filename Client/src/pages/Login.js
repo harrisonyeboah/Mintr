@@ -16,10 +16,35 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement login logic when backend is ready
-    console.log('Login attempt:', formData);
+  
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData), // send username and password
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        alert(`Login failed: ${data.message}`);
+        return;
+      }
+
+      
+  
+      console.log("Login successful:", data);
+  
+      // Reset form after successful login
+      setFormData({ username: "", password: "" });
+    } catch (err) {
+      console.error("Error logging in:", err);
+    }
   };
 
   return (
