@@ -1,24 +1,44 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../styles/Login.css'; // Reuse the same CSS
 
 const ForgetPassword = () => {
-    const [email, setEmail] = useState('');
-    const handleChange = (e) => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const handleChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Implement password reset logic when backend is ready
-    console.log('Password reset requested for:', email);
+
+    try {
+      const response = await fetch('/api/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // 👈 include cookies
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage('Password reset link has been sent to your email.');
+      } else {
+        setMessage(data.error || 'Something went wrong.');
+      }
+    } catch (err) {
+      setMessage('Server error. Please try again later.');
+    }
+
+    setEmail(''); // clear email input
   };
 
   return (
     <div className="login-container">
       <div className="login-card">
         <div className="logo">
-          <h1 className='logoName'>Mintr</h1>
+          <h1 className="logoName">Mintr</h1>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -43,6 +63,8 @@ const ForgetPassword = () => {
           </button>
         </form>
 
+        {message && <p className="status-message">{message}</p>}
+
         <div className="signup-link">
           <p>
             Remembered your password?{' '}
@@ -53,5 +75,7 @@ const ForgetPassword = () => {
     </div>
   );
 };
+
+
 
 export default ForgetPassword;

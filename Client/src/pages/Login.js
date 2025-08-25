@@ -1,24 +1,23 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/Login.css';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "../styles/Login.css";
 
 const Login = () => {
-    /* This is the funtion that basically holds the login function and the state on key down and submits it as javascript object */
   const [formData, setFormData] = useState({
-    username: '',
-    password: ''
+    username: "",
+    password: "",
   });
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const response = await fetch("/api/login", {
         method: "POST",
@@ -26,21 +25,17 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify(formData), // send username and password
+        body: JSON.stringify(formData),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         alert(`Login failed: ${data.message}`);
         return;
       }
 
-      
-  
       console.log("Login successful:", data);
-  
-      // Reset form after successful login
       setFormData({ username: "", password: "" });
     } catch (err) {
       console.error("Error logging in:", err);
@@ -50,14 +45,11 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <div className="logo">
-          <h1 className='logoName'>Mintr</h1>
-        </div>
-        
+        <h1 className="logoName">Mintr</h1>
         <form onSubmit={handleSubmit} className="login-form">
           <h2>Welcome Back</h2>
           <p className="subtitle">Sign in to your account</p>
-          
+
           <div className="form-group">
             <label htmlFor="username">Username</label>
             <input
@@ -70,7 +62,7 @@ const Login = () => {
               required
             />
           </div>
-          
+
           <div className="form-group">
             <label htmlFor="password">Password</label>
             <input
@@ -83,26 +75,29 @@ const Login = () => {
               required
             />
           </div>
-          
+
           <div className="form-options">
             <label className="checkbox-container">
               <input type="checkbox" />
               <span className="checkmark"></span>
               Remember me
             </label>
-            <Link to="/forgot-password" className="forgot-password"> Forgot password? </Link>
-
+            <Link to="/forgot-password" className="forgot-password">
+              Forgot password?
+            </Link>
           </div>
-          
+
           <button type="submit" className="login-button">
             Sign In
           </button>
         </form>
-        
+
         <div className="signup-link">
           <p>
-            Don't have an account?{' '}
-            <Link to="/register" className="link">Sign up</Link>
+            Don't have an account?{" "}
+            <Link to="/register" className="link">
+              Sign up
+            </Link>
           </p>
         </div>
       </div>
@@ -111,4 +106,3 @@ const Login = () => {
 };
 
 export default Login;
-

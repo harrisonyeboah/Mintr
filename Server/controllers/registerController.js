@@ -51,3 +51,23 @@ export async function registerUser(req, res) {
       .json({ message: "Registration failed", error: err.message });
   }
 }
+
+export async function getUserByEmail(req, res) {
+  try {
+    const { email } = req.query; // email passed as query parameter
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    // Find user and exclude password
+    const user = await User.findOne({ email }).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ user });
+  } catch (err) {
+    console.error("Error fetching user:", err);
+    res.status(500).json({ message: "Failed to fetch user", error: err.message });
+  }
+}
