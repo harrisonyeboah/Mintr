@@ -30,13 +30,10 @@ const userSchema = new mongoose.Schema({
     type: Date,
     required: true
   },
-  phoneNumber: {
-    type: String,
-    required: true
-  },
   password: {
     type: String,
-    required: true
+    required: true,
+    minlength: 12 // 🔑 must be at least 12 characters
   },
   verified: {
     type: Boolean,

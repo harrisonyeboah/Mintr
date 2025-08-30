@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 
 const Login = () => {
@@ -7,6 +7,8 @@ const Login = () => {
     username: "",
     password: "",
   });
+
+  const navigate = useNavigate(); // <-- hook for navigation
 
   const handleChange = (e) => {
     setFormData({
@@ -37,6 +39,9 @@ const Login = () => {
 
       console.log("Login successful:", data);
       setFormData({ username: "", password: "" });
+
+      // ✅ Navigate to dashboard after successful login
+      navigate("/dashboard");
     } catch (err) {
       console.error("Error logging in:", err);
     }
